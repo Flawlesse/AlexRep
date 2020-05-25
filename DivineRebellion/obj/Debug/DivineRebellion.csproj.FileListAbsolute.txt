@@ -1,0 +1,10 @@
+D:\VS2020\DivineRebellion\obj\Debug\DivineRebellion.csprojAssemblyReference.cache
+D:\VS2020\DivineRebellion\obj\Debug\DivineRebellion.Form1.resources
+D:\VS2020\DivineRebellion\obj\Debug\DivineRebellion.Properties.Resources.resources
+D:\VS2020\DivineRebellion\obj\Debug\DivineRebellion.csproj.GenerateResource.cache
+D:\VS2020\DivineRebellion\obj\Debug\DivineRebellion.csproj.CoreCompileInputs.cache
+D:\VS2020\DivineRebellion\bin\Debug\DivineRebellion.exe.config
+D:\VS2020\DivineRebellion\bin\Debug\DivineRebellion.exe
+D:\VS2020\DivineRebellion\bin\Debug\DivineRebellion.pdb
+D:\VS2020\DivineRebellion\obj\Debug\DivineRebellion.exe
+D:\VS2020\DivineRebellion\obj\Debug\DivineRebellion.pdb
