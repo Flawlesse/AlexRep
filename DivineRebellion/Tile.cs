@@ -14,7 +14,8 @@ namespace DivineRebellion
         {
             Warrior = null;
             IsFree = true;
+            Missiles = new List<Missile>();
         }
-        
+        public List<Missile> Missiles;
     }
 }

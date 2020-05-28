@@ -30,6 +30,8 @@
         {
             this.SpawnBtn = new System.Windows.Forms.Button();
             this.InitializeBattleFieldBtn = new System.Windows.Forms.Button();
+            this.StartFightBtn = new System.Windows.Forms.Button();
+            this.UnitChoiceBox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // SpawnBtn
@@ -54,11 +56,34 @@
             this.InitializeBattleFieldBtn.UseVisualStyleBackColor = true;
             this.InitializeBattleFieldBtn.Click += new System.EventHandler(this.InitializeBattleFieldBtn_Click);
             // 
+            // StartFightBtn
+            // 
+            this.StartFightBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.StartFightBtn.Location = new System.Drawing.Point(773, 222);
+            this.StartFightBtn.Name = "StartFightBtn";
+            this.StartFightBtn.Size = new System.Drawing.Size(202, 82);
+            this.StartFightBtn.TabIndex = 2;
+            this.StartFightBtn.Text = "Start Fighting";
+            this.StartFightBtn.UseVisualStyleBackColor = true;
+            this.StartFightBtn.Click += new System.EventHandler(this.StartFightBtn_Click);
+            // 
+            // UnitChoiceBox
+            // 
+            this.UnitChoiceBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.UnitChoiceBox.FormattingEnabled = true;
+            this.UnitChoiceBox.Location = new System.Drawing.Point(773, 329);
+            this.UnitChoiceBox.Name = "UnitChoiceBox";
+            this.UnitChoiceBox.Size = new System.Drawing.Size(202, 21);
+            this.UnitChoiceBox.TabIndex = 3;
+            this.UnitChoiceBox.SelectedIndexChanged += new System.EventHandler(this.UnitChoiceBox_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(987, 629);
+            this.Controls.Add(this.UnitChoiceBox);
+            this.Controls.Add(this.StartFightBtn);
             this.Controls.Add(this.InitializeBattleFieldBtn);
             this.Controls.Add(this.SpawnBtn);
             this.Name = "Form1";
@@ -72,6 +97,8 @@
 
         private System.Windows.Forms.Button SpawnBtn;
         private System.Windows.Forms.Button InitializeBattleFieldBtn;
+        private System.Windows.Forms.Button StartFightBtn;
+        public System.Windows.Forms.ComboBox UnitChoiceBox;
     }
 }
 

@@ -53,8 +53,11 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Melee.cs" />
+    <Compile Include="Missile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Ranged.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="Unit.cs" />
     <EmbeddedResource Include="Form1.resx">
