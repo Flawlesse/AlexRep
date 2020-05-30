@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Microsoft.Win32.SafeHandles;
+using System.Runtime.InteropServices;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,13 +11,45 @@ namespace DivineRebellion
 {
     public class Melee: Unit
     {
+        /***********IDISPOSABLE*****************/
+        bool _disposed = false;
+        private SafeHandle _safeHandle = new SafeFileHandle(IntPtr.Zero, true);
+        public new void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        ~Melee() => Dispose(false);
+        protected override void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                // Dispose managed state (managed objects).
+                _safeHandle?.Dispose();
+            }
+            _disposed = true;
+            base.Dispose(disposing);
+        }
+        /***********IDISPOSABLE*****************/
+        /***********PROPERTIES******************/
         private Stack<int> px, py;
         private int[,] wayMap;
+        /***********PROPERTIES******************/
+        /***********METHODS*********************/
         public Melee(Team team, int x, int y) : base(team, x, y)
         {
-            Image img = Image.FromFile(@"D:\VS2020\DivineRebellion\stork.png");//will be specific
-            Bitmap bmp = BattleField.ResizeImage(img, BattleField.resolution, BattleField.resolution);
+            string path = @"D:\VS2020\DivineRebellion\Textures\MeleePhys";
+            path += (team == Team.Blue) ? "Blue.png" : "Red.png";
+
+            Image img = Image.FromFile(path);//will be specific
+            Bitmap bmp = BattleField.ResizeImage(img, BattleField.resolution * 2, BattleField.resolution * 4);
             Texture = bmp;
+            img.Dispose();
 
             px = new Stack<int>();
             py = new Stack<int>();
@@ -36,6 +70,14 @@ namespace DivineRebellion
                 if (iy >= 0 && iy < h && ix >= 0 && ix < w && bt[iy, ix].Warrior != null && bt[iy, ix].Warrior.IsAlive && bt[iy, ix].Warrior.UTeam != this.UTeam)
                 {
                     SetTarget(bt[iy, ix].Warrior);
+                    switch (k)
+                    {
+                        case 0: Dir = Direction.Right; break;
+                        case 1: Dir = Direction.Down; break;
+                        case 2: Dir = Direction.Left; break;
+                        case 3: Dir = Direction.Up; break;
+                    }
+                    IsAttacking = true;
                     return true;
                 }
             }
@@ -46,12 +88,22 @@ namespace DivineRebellion
             if (HasMoved)
                 return;
 
+            IsAttacking = false;
             InititalizeWayMap(bt);
             CreateNewWayMap();
 
             //проверка на действительность клетки
             if (bt[py.Peek(), px.Peek()].IsFree)
             {
+                if (UX < px.Peek())
+                    Dir = Direction.Right;
+                else if (UX > px.Peek())
+                    Dir = Direction.Left;
+                else if (UY < py.Peek())
+                    Dir = Direction.Down;
+                else if (UY > py.Peek())
+                    Dir = Direction.Up;
+
                 bt[py.Peek(), px.Peek()].Warrior = this;
                 bt[py.Peek(), px.Peek()].IsFree = false;
                 bt[UY, UX].Warrior = null;
@@ -155,5 +207,6 @@ namespace DivineRebellion
                 }
             }
         }
+        /***********METHODS*********************/
     }
 }

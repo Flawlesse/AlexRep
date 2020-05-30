@@ -112,7 +112,9 @@ namespace DivineRebellion
                                 break;
                         }
                         BattleTiles[e.Y / resolution, e.X / resolution].IsFree = false;
-                        LoadTexture(BattleTiles[e.Y / resolution, e.X / resolution].Warrior.Texture, (e.X / resolution) * resolution, (e.Y / resolution) * resolution);
+                        LoadTexture(BattleTiles[e.Y / resolution, e.X / resolution].Warrior.Texture, (e.X / resolution) * resolution, 
+                                    (e.Y / resolution) * resolution, BattleTiles[e.Y / resolution, e.X / resolution].Warrior.Dir, 
+                                    BattleTiles[e.Y / resolution, e.X / resolution].Warrior.IsAttacking);
                     }
                 }
                 else
@@ -135,14 +137,25 @@ namespace DivineRebellion
             g.Dispose();
             return new_image;
         }
-        public void LoadTexture(Bitmap bmp, int x1, int y1)//загружает переданную текстуру в InitField
+        public void LoadTexture(Bitmap bmp, int x1, int y1, Direction dir, bool doesAttack)//загружает переданную текстуру в InitField
         {
-            for (int x = 0; x < resolution; x++)
-                for (int y = 0; y < resolution; y++)
+            int k1, k2 = 0;//нужны для загрузки правильного изображения
+            switch (dir)
+            {
+                case Direction.Left:  k1 = 0; break;
+                case Direction.Right: k1 = 1; break;
+                case Direction.Up:    k1 = 2; break;
+                default:              k1 = 3; break;
+            }
+            if (doesAttack)
+                k2 = 1;
+
+            for (int x = k1 * resolution; x < (k1 + 1) * resolution; x++)
+                for (int y = k2 * resolution; y < (k2 + 1) * resolution; y++)
                 {
                     Color col = bmp.GetPixel(x, y);
                     if (col != Color.FromArgb(0,0,0,0))//transparency
-                        InitField.SetPixel(x1 + x, y1 + y, col);
+                        InitField.SetPixel(x1 - k1 * resolution + x, y1 - k2 * resolution + y, col);
                 }
 
         }
@@ -187,14 +200,14 @@ namespace DivineRebellion
                     if (BattleTiles[i, j].IsFree || BattleTiles[i, j].Warrior == null || !BattleTiles[i, j].Warrior.IsAlive)
                         continue;
                     else
-                        LoadTexture(BattleTiles[i, j].Warrior.Texture, j * resolution, i * resolution);
+                        LoadTexture(BattleTiles[i, j].Warrior.Texture, j * resolution, i * resolution, BattleTiles[i, j].Warrior.Dir, BattleTiles[i, j].Warrior.IsAttacking);
 
             for (int i = 0; i < h; i++)
                 for (int j = 0; j < w; j++)
                     if (BattleTiles[i, j].Missiles.Count != 0)
                     {
                         foreach (Missile m in BattleTiles[i, j].Missiles.ToArray())
-                            LoadTexture(m.Texture, j * resolution, i * resolution);
+                            LoadTexture(m.Texture, j * resolution, i * resolution, m.MDir, false);
                     }
 
             FieldBox.Image.Dispose();

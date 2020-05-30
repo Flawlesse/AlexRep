@@ -2,62 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Win32.SafeHandles;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Drawing;
 
 namespace DivineRebellion
 {
-    public class Missile//: IDisposable
+    public class Missile
     {
-        /***********IDISPOSABLE*****************/
-        //bool _disposed = false;
-        //private SafeHandle _safeHandle = new SafeFileHandle(IntPtr.Zero, true);
-        //public void Dispose()
-        //{
-        //    Dispose(true);
-        //    GC.SuppressFinalize(this);
-        //}
-        //~Missile() => Dispose(false);
-        //protected virtual void Dispose(bool disposing)
-        //{
-        //    if (_disposed)
-        //    {
-        //        return;
-        //    }
-
-        //    if (disposing)
-        //    {
-        //        // Dispose managed state (managed objects).
-        //        _safeHandle?.Dispose();
-        //    }
-        //    _disposed = true;
-        //}
-        /***********IDISPOSABLE*****************/
         /***********PROPERTIES******************/
         public Bitmap Texture { get; private set; }
         public Direction MDir { get; private set; }
         public DamageType DmgType { get; private set; }
         public Team MTeam { get; private set; }
         private int Damage { get; set; }
-        public int Velocity { get; private set; }//измеряется в клетках
         private int MX { get; set; }
         private int MY { get; set; }
         public bool HasMoved { get; private set; }
         private Unit Target { get; set; }
         /***********PROPERTIES******************/
         /***********METHODS*********************/
-        public Missile(Team t, Direction dir, int v, int x, int y, DamageType dmgt, int dmg)
+        public Missile(Team team, Direction dir, int x, int y, DamageType dmgt, int dmg)
         {
-            Image img = Image.FromFile(@"D:\VS2020\DivineRebellion\bullet.png");//will be specific
-            Bitmap bmp = BattleField.ResizeImage(img, BattleField.resolution, BattleField.resolution);
-            //img.Dispose();
-            Texture = bmp;
+            string path = @"D:\VS2020\DivineRebellion\Textures\Missile";
+            path += (team == Team.Blue) ? "Blue.png" : "Red.png";
 
-            MTeam = t;
+            Image img = Image.FromFile(path);//will be specific
+            Bitmap bmp = BattleField.ResizeImage(img, BattleField.resolution, BattleField.resolution * 4);
+            Texture = bmp;
+            img.Dispose();
+
+            MTeam = team;
             MDir = dir;
-            Velocity = v;
             MX = x;
             MY = y;
             DmgType = dmgt;
@@ -72,13 +47,9 @@ namespace DivineRebellion
             {
                 Attack(bf);
                 bt[MY, MX].Missiles.Remove(this);
-                //dispose?
             }
             else
-            {
                 Move(bt, h, w);
-                //out of range -> dispose?
-            }
         }
         public void Attack(BattleField bf)
         {
@@ -124,10 +95,7 @@ namespace DivineRebellion
                 
             }
             else
-            {
                 bt[MY, MX].Missiles.Remove(this);
-                //dispose?
-            }
             HasMoved = true;
         }
         private bool SomeoneInRange(Tile[,] bt, int h, int w)

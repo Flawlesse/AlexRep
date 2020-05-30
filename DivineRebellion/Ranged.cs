@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Microsoft.Win32.SafeHandles;
+using System.Runtime.InteropServices;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,16 +12,51 @@ namespace DivineRebellion
 
     public class Ranged: Unit
     {
+        /***********IDISPOSABLE*****************/
+        bool _disposed = false;
+        private SafeHandle _safeHandle = new SafeFileHandle(IntPtr.Zero, true);
+        public new void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        ~Ranged() => Dispose(false);
+        protected override void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
 
+            if (disposing)
+            {
+                // Dispose managed state (managed objects).
+                _safeHandle?.Dispose();
+            }
+            _disposed = true;
+            base.Dispose(disposing);
+        }
+        /***********IDISPOSABLE*****************/
+        /***********PROPERTIES******************/
+        private int movesOnReload;
+        private int moveCount;
+        /***********PROPERTIES******************/
+        /***********METHODS*********************/
         public Ranged(Team team, int x, int y): base(team, x, y)
         {
-            Image img = Image.FromFile(@"D:\VS2020\DivineRebellion\goose.png");//will be specific
-            Bitmap bmp = BattleField.ResizeImage(img, BattleField.resolution, BattleField.resolution); ;
+            string path = @"D:\VS2020\DivineRebellion\Textures\RangeMagic";
+            path += (team == Team.Blue) ? "Blue.png" : "Red.png";
+
+            Image img = Image.FromFile(path);//will be specific
+            Bitmap bmp = BattleField.ResizeImage(img, BattleField.resolution * 2, BattleField.resolution * 4); ;
             Texture = bmp;
+            img.Dispose();
 
             UTeam = team;
             UX = x;
             UY = y;
+            movesOnReload = 3;
+            moveCount = movesOnReload;//сначала заряд уже есть
         }
         
         public override bool SomeoneInRange(Tile[,] bt, int h, int w)
@@ -29,6 +66,7 @@ namespace DivineRebellion
                 {
                     SetTarget(bt[y, UX].Warrior);
                     Dir = Direction.Up;
+                    IsAttacking = true;
                     return true;
                 }
             for (int y = UY + 1; y < h; y++)// SEARCH DOWNWARDS
@@ -36,6 +74,7 @@ namespace DivineRebellion
                 {
                     SetTarget(bt[y, UX].Warrior);
                     Dir = Direction.Down;
+                    IsAttacking = true;
                     return true;
                 }
             for (int x = UX - 1; x >= 0; x--)// SEARCH LEFTWARDS
@@ -43,6 +82,7 @@ namespace DivineRebellion
                 {
                     SetTarget(bt[UY, x].Warrior);
                     Dir = Direction.Left;
+                    IsAttacking = true;
                     return true;
                 }
             for (int x = UX + 1; x < w; x++)// SEARCH RIGHTWARDS
@@ -50,8 +90,28 @@ namespace DivineRebellion
                 {
                     SetTarget(bt[UY, x].Warrior);
                     Dir = Direction.Right;
+                    IsAttacking = true;
                     return true;
                 }
+
+            return false;
+        }
+        private bool InPossibleRange(Tile[,] bt, int h, int w, int rx, int ry)
+        {
+            for (int y = ry - 1; y >= 0; y--)// SEARCH UPWARDS
+                if (!bt[y, rx].IsFree && bt[y, rx].Warrior != null && bt[y, rx].Warrior.UTeam != this.UTeam)           
+                    return true;
+           
+            for (int y = ry + 1; y < h; y++)// SEARCH DOWNWARDS
+                if (!bt[y, rx].IsFree && bt[y, rx].Warrior != null && bt[y, rx].Warrior.UTeam != this.UTeam)
+                    return true;
+          
+            for (int x = rx - 1; x >= 0; x--)// SEARCH LEFTWARDS
+                if (!bt[ry, x].IsFree && bt[ry, x].Warrior != null && bt[ry, x].Warrior.UTeam != this.UTeam)
+                    return true;
+            for (int x = rx + 1; x < w; x++)// SEARCH RIGHTWARDS
+                if (!bt[ry, x].IsFree && bt[ry, x].Warrior != null && bt[ry, x].Warrior.UTeam != this.UTeam)
+                    return true;
 
             return false;
         }
@@ -60,6 +120,10 @@ namespace DivineRebellion
             if (HasMoved)
                 return;
 
+            if ((moveCount + 1) % movesOnReload != 0)
+                moveCount++;
+
+            IsAttacking = false;
             List<int> listCoordsX = new List<int>();
             List<int> ListCoordsY = new List<int>();
             int rx = UX, ry = UY;
@@ -93,6 +157,18 @@ namespace DivineRebellion
             rx = UX;
             if (ry >= 0 && ry < h && bt[ry, rx].IsFree)
             {
+                if (InPossibleRange(bt, BattleField.height / BattleField.resolution, BattleField.width / BattleField.resolution, rx, ry))
+                {
+                    bt[ry, rx].Warrior = this;
+                    bt[ry, rx].IsFree = false;
+                    bt[UY, UX].Warrior = null;
+                    bt[UY, UX].IsFree = true;
+                    UY = ry;
+                    UX = rx;
+                    HasMoved = true;
+                    Dir = Direction.Up;
+                    return;
+                }
                 for (int i = 0; i < n; i++)
                 {
                     tmp = Distance(rx, ry, coordsX[i], coordsY[i]);
@@ -108,8 +184,21 @@ namespace DivineRebellion
 
             ry = UY + 1; //DOWNWARDS
             rx = UX;
+            
             if (ry >= 0 && ry < h && bt[ry, rx].IsFree)
             {
+                if (InPossibleRange(bt, BattleField.height / BattleField.resolution, BattleField.width / BattleField.resolution, rx, ry))
+                {
+                    bt[ry, rx].Warrior = this;
+                    bt[ry, rx].IsFree = false;
+                    bt[UY, UX].Warrior = null;
+                    bt[UY, UX].IsFree = true;
+                    UY = ry;
+                    UX = rx;
+                    HasMoved = true;
+                    Dir = Direction.Down;
+                    return;
+                }
                 for (int i = 0; i < n; i++)
                 {
                     tmp = Distance(rx, ry, coordsX[i], coordsY[i]);
@@ -127,6 +216,18 @@ namespace DivineRebellion
             rx = UX - 1;
             if (rx >= 0 && rx < w && bt[ry, rx].IsFree)
             {
+                if (InPossibleRange(bt, BattleField.height / BattleField.resolution, BattleField.width / BattleField.resolution, rx, ry))
+                {
+                    bt[ry, rx].Warrior = this;
+                    bt[ry, rx].IsFree = false;
+                    bt[UY, UX].Warrior = null;
+                    bt[UY, UX].IsFree = true;
+                    UY = ry;
+                    UX = rx;
+                    HasMoved = true;
+                    Dir = Direction.Left;
+                    return;
+                }
                 for (int i = 0; i < n; i++)
                 {
                     tmp = Distance(rx, ry, coordsX[i], coordsY[i]);
@@ -144,6 +245,18 @@ namespace DivineRebellion
             rx = UX + 1;
             if (rx >= 0 && rx < w && bt[ry, rx].IsFree)
             {
+                if (InPossibleRange(bt, BattleField.height / BattleField.resolution, BattleField.width / BattleField.resolution, rx, ry))
+                {
+                    bt[ry, rx].Warrior = this;
+                    bt[ry, rx].IsFree = false;
+                    bt[UY, UX].Warrior = null;
+                    bt[UY, UX].IsFree = true;
+                    UY = ry;
+                    UX = rx;
+                    HasMoved = true;
+                    Dir = Direction.Right;
+                    return;
+                }
                 for (int i = 0; i < n; i++)
                 {
                     tmp = Distance(rx, ry, coordsX[i], coordsY[i]);
@@ -176,19 +289,26 @@ namespace DivineRebellion
             //выпустить снаряд с нужными характеристиками в нужном направлении
             if (Target != null)
             {
+                if ((moveCount + 1) % movesOnReload != 0)
+                {
+                    moveCount++;
+                    return;
+                }
+
+                moveCount = 0;
                 switch (Dir)
                 {
                     case Direction.Down:
-                        bf.BattleTiles[UY + 1, UX].Missiles.Add(new Missile(this.UTeam, Dir, 1, UX, UY + 1, DmgType, AADmg));
+                        bf.BattleTiles[UY + 1, UX].Missiles.Add(new Missile(this.UTeam, Dir, UX, UY + 1, DmgType, AADmg));
                         break;
                     case Direction.Up:
-                        bf.BattleTiles[UY - 1, UX].Missiles.Add(new Missile(this.UTeam, Dir, 1, UX, UY - 1, DmgType, AADmg));
+                        bf.BattleTiles[UY - 1, UX].Missiles.Add(new Missile(this.UTeam, Dir, UX, UY - 1, DmgType, AADmg));
                         break;
                     case Direction.Left:
-                        bf.BattleTiles[UY, UX - 1].Missiles.Add(new Missile(this.UTeam, Dir, 1, UX - 1, UY, DmgType, AADmg));
+                        bf.BattleTiles[UY, UX - 1].Missiles.Add(new Missile(this.UTeam, Dir, UX - 1, UY, DmgType, AADmg));
                         break;
                     default:
-                        bf.BattleTiles[UY, UX + 1].Missiles.Add(new Missile(this.UTeam, Dir, 1, UX + 1, UY, DmgType, AADmg));
+                        bf.BattleTiles[UY, UX + 1].Missiles.Add(new Missile(this.UTeam, Dir, UX + 1, UY, DmgType, AADmg));
                         break;
                 }
             }
@@ -197,5 +317,6 @@ namespace DivineRebellion
         {
             return Math.Sqrt(Math.Pow(x1 - x2, 2) + Math.Pow(y1 - y2, 2));
         }
+        /***********METHODS*********************/
     }
 }

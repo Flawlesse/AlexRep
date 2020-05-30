@@ -52,6 +52,7 @@ namespace DivineRebellion
         public int PhysDef { get; protected set; }
         public int MagDef { get; protected set; }
         public int AADmg { get; protected set; }
+        public bool IsAttacking { get; protected set; }
         protected int UX, UY;//координаты
         
         public Unit(Team team, int x, int y)//constructor
@@ -60,7 +61,7 @@ namespace DivineRebellion
 
             Name = "Unit";
             IsAlive = true;
-            Dir = Direction.Up;
+            Dir = Direction.Down;
             DmgType = DamageType.Physical;
             PhysDef = 30;
             MagDef = 20;
@@ -72,10 +73,6 @@ namespace DivineRebellion
             UY = y;
             UTeam = team;
 
-            
-        }
-        protected void ChangeTexture()
-        { 
             
         }
         public abstract void Move(Tile[,] bt);
