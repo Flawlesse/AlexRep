@@ -23,7 +23,7 @@ namespace DivineRebellion
         /***********METHODS*********************/
         public Missile(Team team, Direction dir, int x, int y, DamageType dmgt, int dmg)
         {
-            string path = @"D:\VS2020\DivineRebellion\Textures\Missile";
+            string path = Environment.CurrentDirectory + @"\Textures\Missile";
             path += (team == Team.Blue) ? "Blue.png" : "Red.png";
 
             Image img = Image.FromFile(path);//will be specific
@@ -42,6 +42,9 @@ namespace DivineRebellion
         }
         public void Act(BattleField bf, Tile[,] bt)
         {
+            if (HasMoved)
+                return;
+
             int h = BattleField.height / BattleField.resolution, w = BattleField.width / BattleField.resolution;
             if (SomeoneInRange(bt, h, w))
             {
@@ -50,6 +53,8 @@ namespace DivineRebellion
             }
             else
                 Move(bt, h, w);
+            HasMoved = true;
+
         }
         public void Attack(BattleField bf)
         {
@@ -60,9 +65,6 @@ namespace DivineRebellion
         }
         public void Move(Tile[,] bt, int h, int w)
         {
-            if (HasMoved)
-                return;
-
             int dx, dy;
             switch (MDir)
             {
@@ -96,7 +98,7 @@ namespace DivineRebellion
             }
             else
                 bt[MY, MX].Missiles.Remove(this);
-            HasMoved = true;
+            
         }
         private bool SomeoneInRange(Tile[,] bt, int h, int w)
         {

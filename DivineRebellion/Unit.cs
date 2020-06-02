@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using Microsoft.Win32.SafeHandles;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 namespace DivineRebellion
 {
@@ -17,7 +13,7 @@ namespace DivineRebellion
     {
         bool _disposed = false;
         private SafeHandle _safeHandle = new SafeFileHandle(IntPtr.Zero, true);
-        public void Dispose()
+        public virtual void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
@@ -39,9 +35,7 @@ namespace DivineRebellion
             
         }
 
-        
         public Bitmap Texture { get; protected set; }
-        protected string Name { get; set; }
         public bool IsAlive { get; set; } 
         public bool HasMoved { get; protected set; }
         public Direction Dir { get; protected set; }
@@ -49,6 +43,7 @@ namespace DivineRebellion
         public Team UTeam { get; protected set; }
         public Unit Target { get; set; }
         public int Health { get; protected set; }
+        public int MaxHealth { get; protected set; }
         public int PhysDef { get; protected set; }
         public int MagDef { get; protected set; }
         public int AADmg { get; protected set; }
@@ -57,16 +52,9 @@ namespace DivineRebellion
         
         public Unit(Team team, int x, int y)//constructor
         {
-            
-
-            Name = "Unit";
             IsAlive = true;
             Dir = Direction.Down;
-            DmgType = DamageType.Physical;
-            PhysDef = 30;
-            MagDef = 20;
-            AADmg = 45;
-            Health = 200;
+            
             Target = null;
             
             UX = x;

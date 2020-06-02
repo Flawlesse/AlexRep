@@ -28,27 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SpawnBtn = new System.Windows.Forms.Button();
+            this.FullClearBtn = new System.Windows.Forms.Button();
             this.InitializeBattleFieldBtn = new System.Windows.Forms.Button();
             this.StartFightBtn = new System.Windows.Forms.Button();
             this.UnitChoiceBox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
-            // SpawnBtn
+            // FullClearBtn
             // 
-            this.SpawnBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.SpawnBtn.Location = new System.Drawing.Point(773, 112);
-            this.SpawnBtn.Name = "SpawnBtn";
-            this.SpawnBtn.Size = new System.Drawing.Size(202, 92);
-            this.SpawnBtn.TabIndex = 0;
-            this.SpawnBtn.Text = "Spawn";
-            this.SpawnBtn.UseVisualStyleBackColor = true;
-            this.SpawnBtn.Click += new System.EventHandler(this.SpawnBtn_Click);
+            this.FullClearBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.FullClearBtn.Location = new System.Drawing.Point(773, 112);
+            this.FullClearBtn.Name = "FullClearBtn";
+            this.FullClearBtn.Size = new System.Drawing.Size(202, 92);
+            this.FullClearBtn.TabIndex = 0;
+            this.FullClearBtn.Text = "Очистить поле";
+            this.FullClearBtn.UseVisualStyleBackColor = true;
+            this.FullClearBtn.Click += new System.EventHandler(this.FullClearBtn_Click);
             // 
             // InitializeBattleFieldBtn
             // 
-            this.InitializeBattleFieldBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.InitializeBattleFieldBtn.Location = new System.Drawing.Point(773, 12);
+            this.InitializeBattleFieldBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.InitializeBattleFieldBtn.Location = new System.Drawing.Point(355, 181);
             this.InitializeBattleFieldBtn.Name = "InitializeBattleFieldBtn";
             this.InitializeBattleFieldBtn.Size = new System.Drawing.Size(202, 80);
             this.InitializeBattleFieldBtn.TabIndex = 1;
@@ -63,7 +65,7 @@
             this.StartFightBtn.Name = "StartFightBtn";
             this.StartFightBtn.Size = new System.Drawing.Size(202, 82);
             this.StartFightBtn.TabIndex = 2;
-            this.StartFightBtn.Text = "Start Fighting";
+            this.StartFightBtn.Text = "Начать бой";
             this.StartFightBtn.UseVisualStyleBackColor = true;
             this.StartFightBtn.Click += new System.EventHandler(this.StartFightBtn_Click);
             // 
@@ -81,13 +83,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(987, 629);
             this.Controls.Add(this.UnitChoiceBox);
             this.Controls.Add(this.StartFightBtn);
             this.Controls.Add(this.InitializeBattleFieldBtn);
-            this.Controls.Add(this.SpawnBtn);
+            this.Controls.Add(this.FullClearBtn);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "DivineRebellion";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.ResumeLayout(false);
 
@@ -95,7 +98,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button SpawnBtn;
+        private System.Windows.Forms.Button FullClearBtn;
         private System.Windows.Forms.Button InitializeBattleFieldBtn;
         private System.Windows.Forms.Button StartFightBtn;
         public System.Windows.Forms.ComboBox UnitChoiceBox;

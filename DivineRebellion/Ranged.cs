@@ -3,19 +3,16 @@ using System.Collections.Generic;
 using System.Drawing;
 using Microsoft.Win32.SafeHandles;
 using System.Runtime.InteropServices;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DivineRebellion
 {
 
-    public class Ranged: Unit
+    public class Ranged: Unit, ICloneable
     {
         /***********IDISPOSABLE*****************/
         bool _disposed = false;
         private SafeHandle _safeHandle = new SafeFileHandle(IntPtr.Zero, true);
-        public new void Dispose()
+        public override void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
@@ -37,6 +34,12 @@ namespace DivineRebellion
             base.Dispose(disposing);
         }
         /***********IDISPOSABLE*****************/
+        /***********ICLONEABLE******************/
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+        /***********ICLONEABLE******************/
         /***********PROPERTIES******************/
         private int movesOnReload;
         private int moveCount;
@@ -44,7 +47,7 @@ namespace DivineRebellion
         /***********METHODS*********************/
         public Ranged(Team team, int x, int y): base(team, x, y)
         {
-            string path = @"D:\VS2020\DivineRebellion\Textures\RangeMagic";
+            string path = Environment.CurrentDirectory + @"\Textures\RangeMagic";
             path += (team == Team.Blue) ? "Blue.png" : "Red.png";
 
             Image img = Image.FromFile(path);//will be specific
@@ -52,11 +55,17 @@ namespace DivineRebellion
             Texture = bmp;
             img.Dispose();
 
+            DmgType = DamageType.Magic;
+            PhysDef = 30;
+            MagDef = 20;
+            AADmg = 45;
+            MaxHealth = Health = 200;
+
             UTeam = team;
             UX = x;
             UY = y;
             movesOnReload = 3;
-            moveCount = movesOnReload;//сначала заряд уже есть
+            moveCount = movesOnReload - 1;//сначала заряд уже есть
         }
         
         public override bool SomeoneInRange(Tile[,] bt, int h, int w)

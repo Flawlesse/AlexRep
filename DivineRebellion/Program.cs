@@ -11,17 +11,19 @@ using System.Windows.Forms;
 
 namespace DivineRebellion
 {
-    static class Program
+    public static class Program
     {
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
+        public static Form1 MainForm;
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            MainForm = new Form1();
+            Application.Run(MainForm);
         }
     }
 }

@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DivineRebellion
@@ -22,17 +16,28 @@ namespace DivineRebellion
             UnitChoiceBox.Items.Add("Ranged");
             UnitChoiceBox.SelectedItem = UnitChoiceBox.Items[0];
             UnitChoiceBox.SelectedIndex = 0;
+
+            FullClearBtn.Visible = false;
+            StartFightBtn.Visible = false;
+            UnitChoiceBox.Visible = false;
         }
 
-        private void SpawnBtn_Click(object sender, EventArgs e)
+        private void FullClearBtn_Click(object sender, EventArgs e)//очищает поле целиком
         {
-            BattleF.ClearFullField(true);
+            if (BattleF != null)
+                BattleF.ClearFullField(true);
+            else
+                MessageBox.Show("Initialize battle field first!");
         }
 
         private void InitializeBattleFieldBtn_Click(object sender, EventArgs e)
         {
             BattleF = new BattleField();
             BattleF.UnitChoice = (string)UnitChoiceBox.SelectedItem;
+            InitializeBattleFieldBtn.Visible = false;
+            FullClearBtn.Visible = true;
+            StartFightBtn.Visible = true;
+            UnitChoiceBox.Visible = true;
         }
 
         private void StartFightBtn_Click(object sender, EventArgs e)
@@ -47,6 +52,12 @@ namespace DivineRebellion
         {
             if (BattleF != null)
                 BattleF.UnitChoice = (string)UnitChoiceBox.SelectedItem;
+        }
+        public void ToggleButtons()
+        {
+            FullClearBtn.Enabled = !FullClearBtn.Enabled;
+            StartFightBtn.Enabled = !StartFightBtn.Enabled;
+            UnitChoiceBox.Enabled = !UnitChoiceBox.Enabled;
         }
     }
 }

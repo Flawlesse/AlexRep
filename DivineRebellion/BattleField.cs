@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DivineRebellion
@@ -24,10 +18,12 @@ namespace DivineRebellion
         public static readonly int resolution = 75;
         public string UnitChoice { get; set; }
         public Tile[,] BattleTiles { get; private set; }
+        private Tile[,] BTCopy { get; set; }
         private bool allowMouseMove;
         private bool allowMouseClick;
         public static readonly int width = 900, height = 750;
-        private Pen Pen;
+        readonly Pen Pen = new Pen(Color.Yellow, 5);
+        readonly Pen HPen = new Pen(Color.Red, 3);
         public EventHandler<TileEventArgs> OnDied;//событие для обработки умершего воина
         private string toShow;
         public BattleField()
@@ -35,16 +31,14 @@ namespace DivineRebellion
             FieldBox = new PictureBox();
             Form1.ActiveForm.Controls.Add(FieldBox);
             FieldBox.SizeMode = PictureBoxSizeMode.StretchImage;
-            FieldBox.Image = Image.FromFile(@"D:\My desktop personalization\600528.png");
+            FieldBox.Image = Image.FromFile(Environment.CurrentDirectory + @"\Textures\BattleField.png");
             FieldBox.Image = ResizeImage(FieldBox.Image, height, width);
             InitField = new Bitmap(FieldBox.Image);
             CleanField = new Bitmap(FieldBox.Image);
             FieldBox.ClientSize = new Size(width, height);
             FieldBox.Parent = Form1.ActiveForm;
-            Pen = new Pen(Color.Yellow);
-            Pen.Width = 5;
             BattleTimer = new System.Windows.Forms.Timer();
-            BattleTimer.Interval = 250;
+            BattleTimer.Interval = 400;
             BattleTimer.Tick += new EventHandler(TimerEventProcessor);
             allowMouseClick = true;
             allowMouseMove = true;
@@ -54,15 +48,18 @@ namespace DivineRebellion
 
             //initializing battle tiles (most respective part)
             BattleTiles = new Tile[height / resolution, width / resolution];
-            
+            BTCopy = new Tile[height / resolution, width / resolution];
+
             for (int i = 0; i < height / resolution; i++)
                 for (int j = 0; j < width / resolution; j++)
+                {
                     BattleTiles[i, j] = new Tile();
-
+                    BTCopy[i, j] = new Tile();
+                }
             FieldBox.MouseMove += new MouseEventHandler(FieldBox_MouseMove);
             FieldBox.MouseClick += new MouseEventHandler(FieldBox_MouseClick);
         }
-        private void FreeBCell(object sender, TileEventArgs e)//надо малость переписать
+        private void FreeBCell(object sender, TileEventArgs e)
         {
             Unit warrior = sender as Unit;
             if (warrior.Equals(BattleTiles[e.Y, e.X].Warrior))
@@ -78,7 +75,6 @@ namespace DivineRebellion
             {
                 FieldBox.Image.Dispose();
                 FieldBox.Image = (Image)InitField.Clone();
-                //redraw
 
                 Bitmap bmp = FieldBox.Image as Bitmap;
                 Graphics graphics = Graphics.FromImage(bmp);
@@ -92,7 +88,7 @@ namespace DivineRebellion
         {
             if (allowMouseClick)
             {
-                if (BattleTiles[e.Y / resolution, e.X / resolution].IsFree)//переписать на загрузку из нового экземпляра Unit
+                if (BattleTiles[e.Y / resolution, e.X / resolution].IsFree)
                 {
                     if (e.Button == MouseButtons.Left)
                     {
@@ -180,6 +176,8 @@ namespace DivineRebellion
                 for (int i = 0; i < height / resolution; i++)
                     for (int j = 0; j < width / resolution; j++)
                     {
+                        if (BattleTiles[i, j].Missiles.Count != 0)
+                            BattleTiles[i, j].Missiles.Clear();
                         if (BattleTiles[i, j].Warrior != null)
                         {
                             BattleTiles[i, j].Warrior.Dispose();
@@ -193,15 +191,19 @@ namespace DivineRebellion
         {
             int h = height / resolution, w = width / resolution;
             ClearFullField(false);
-            
+            Graphics g = Graphics.FromImage(InitField);
 
             for (int i = 0; i < h; i++)
                 for (int j = 0; j < w; j++)
                     if (BattleTiles[i, j].IsFree || BattleTiles[i, j].Warrior == null || !BattleTiles[i, j].Warrior.IsAlive)
                         continue;
                     else
+                    {
                         LoadTexture(BattleTiles[i, j].Warrior.Texture, j * resolution, i * resolution, BattleTiles[i, j].Warrior.Dir, BattleTiles[i, j].Warrior.IsAttacking);
-
+                        double tcost = BattleTiles[i, j].Warrior.MaxHealth / (double)resolution;
+                        int barLength = (int)Math.Round(BattleTiles[i, j].Warrior.Health / tcost);//длина полоски хп                       
+                        g.DrawLine(HPen, new Point(j * resolution, (i + 1) * resolution - 3), new Point(j * resolution + barLength, (i + 1) * resolution - 3));
+                    }
             for (int i = 0; i < h; i++)
                 for (int j = 0; j < w; j++)
                     if (BattleTiles[i, j].Missiles.Count != 0)
@@ -210,23 +212,33 @@ namespace DivineRebellion
                             LoadTexture(m.Texture, j * resolution, i * resolution, m.MDir, false);
                     }
 
+            g.Dispose();
             FieldBox.Image.Dispose();
             FieldBox.Image = (Image)InitField.Clone();
         }
         private void TimerEventProcessor(object obj, EventArgs e)
         {
-            //Redraw();
             int h = height / resolution, w = width / resolution;
-           
+
             if (CheckFightDone())
             {
                 BattleTimer.Stop();
                 MessageBox.Show(toShow);
+                Program.MainForm.Activate();
+                ((Form1)Form.ActiveForm).ToggleButtons();
                 allowMouseClick = true;
                 allowMouseMove = true;
+                //copy all back
+                for (int i = 0; i < height / resolution; i++)
+                    for (int j = 0; j < width / resolution; j++)
+                        BattleTiles[i, j] = (Tile)BTCopy[i, j].Clone();
+
+                GC.Collect();
+                Redraw();
                 return;
             }
             for (int i = 0; i < h; i++)
+            {
                 for (int j = 0; j < w; j++)
                 {
                     if (BattleTiles[i, j].Missiles.Count != 0)
@@ -238,13 +250,14 @@ namespace DivineRebellion
                     if (BattleTiles[i, j].Warrior.SomeoneInRange(BattleTiles, h, w))
                         BattleTiles[i, j].Warrior.AttackTarget(this);
                     else
-                        BattleTiles[i, j].Warrior.Move(BattleTiles);
+                        BattleTiles[i, j].Warrior.Move(BattleTiles); 
                 }
+            }
             for (int i = 0; i < h; i++)
                 for (int j = 0; j < w; j++)
                 {
                     if (BattleTiles[i, j].Missiles.Count != 0)
-                        foreach (Missile m in BattleTiles[i, j].Missiles)
+                        foreach (Missile m in BattleTiles[i, j].Missiles.ToArray())
                             m.UnsetMove();
 
                     if (BattleTiles[i, j].IsFree)
@@ -298,8 +311,13 @@ namespace DivineRebellion
                 allowMouseMove = true;
                 return;
             }
+            //copy initial state of the field
+            for (int i = 0; i < height / resolution; i++)
+                for (int j = 0; j < width / resolution; j++)
+                    BTCopy[i, j] = (Tile)BattleTiles[i, j].Clone();
+
             BattleTimer.Start();
-            
+            ((Form1)Form.ActiveForm).ToggleButtons();
         }
         
     }
