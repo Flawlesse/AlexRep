@@ -1,0 +1,72 @@
+29.10.2020 11:07:11 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Elementarnoe_vvedenie_v_tekhnologiyu_neyronnykh_setey_s_primerami_programm_-_R_Tadeusevich_2011.djvu был создан
+29.10.2020 11:07:12 файл D:\УЧЁБА\C#\lab2cs\Server\Source\HxDSetup.zip был создан
+29.10.2020 11:07:12 файл D:\УЧЁБА\C#\lab2cs\Server\Source\ШилдтС#.pdf был создан
+29.10.2020 11:07:12 файл D:\УЧЁБА\C#\lab2cs\Server\Source\2_5420336641237583870.pdf был создан
+29.10.2020 11:07:12 файл D:\УЧЁБА\C#\lab2cs\Server\Source\1582046345570.pdf был создан
+29.10.2020 11:07:12 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\HxDSetup.zip был создан
+29.10.2020 11:07:13 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\2_5420336641237583870.zip был создан
+29.10.2020 11:07:13 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\ШилдтС#.zip был создан
+29.10.2020 11:07:13 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Biblia_S__3-izd_-_M_Flenov_2016.pdf был создан
+29.10.2020 11:07:14 файл D:\УЧЁБА\C#\lab2cs\Server\Source\C_7_0_Karmanny_spravochnik_-_Dzh_Albakhari_2017.pdf был создан
+29.10.2020 11:07:15 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\C_7_0_Karmanny_spravochnik_-_Dzh_Albakhari_2017.zip был создан
+29.10.2020 11:07:16 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\Elementarnoe_vvedenie_v_tekhnologiyu_neyronnykh_setey_s_primerami_programm_-_R_Tadeusevich_2011.zip был создан
+29.10.2020 11:07:18 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\Biblia_S__3-izd_-_M_Flenov_2016.zip был создан
+29.10.2020 11:07:21 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\1582046345570.zip был создан
+29.10.2020 11:07:43 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Dearchivated\1582046345570_decrypted.pdf был создан
+29.10.2020 11:07:48 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\$$$.zip был удален
+29.10.2020 11:07:51 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Dearchivated\Biblia_S__3-izd_-_M_Flenov_2016_decrypted.pdf был создан
+29.10.2020 11:07:54 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\$$$.zip был удален
+29.10.2020 11:08:20 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Dearchivated\ШилдтС#_decrypted.pdf был создан
+29.10.2020 11:08:20 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\ШилдтС#$$$.zip был удален
+29.10.2020 11:08:25 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Dearchivated\C_7_0_Karmanny_spravochnik_-_Dzh_Albakhari_2017_decrypted.pdf был создан
+29.10.2020 11:08:25 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\C_7_0_Karmanny_spravochnik_-_Dzh_Albakhari_2017$$$.zip был удален
+29.10.2020 11:08:36 файл D:\УЧЁБА\C#\lab2cs\Server\Source\2_5420336641237583870.pdf был удален
+29.10.2020 11:08:36 файл D:\УЧЁБА\C#\lab2cs\Server\Source\1582046345570.pdf был удален
+29.10.2020 11:08:36 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Biblia_S__3-izd_-_M_Flenov_2016.pdf был удален
+29.10.2020 11:08:36 файл D:\УЧЁБА\C#\lab2cs\Server\Source\C_7_0_Karmanny_spravochnik_-_Dzh_Albakhari_2017.pdf был удален
+29.10.2020 11:08:36 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Elementarnoe_vvedenie_v_tekhnologiyu_neyronnykh_setey_s_primerami_programm_-_R_Tadeusevich_2011.djvu был удален
+29.10.2020 11:08:36 файл D:\УЧЁБА\C#\lab2cs\Server\Source\HxDSetup.zip был удален
+29.10.2020 11:08:36 файл D:\УЧЁБА\C#\lab2cs\Server\Source\ШилдтС#.pdf был удален
+29.10.2020 11:08:58 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Elementarnoe_vvedenie_v_tekhnologiyu_neyronnykh_setey_s_primerami_programm_-_R_Tadeusevich_2011.djvu был создан
+29.10.2020 11:08:58 файл D:\УЧЁБА\C#\lab2cs\Server\Source\HxDSetup.zip был создан
+29.10.2020 11:08:58 файл D:\УЧЁБА\C#\lab2cs\Server\Source\ШилдтС#.pdf был создан
+29.10.2020 11:08:58 файл D:\УЧЁБА\C#\lab2cs\Server\Source\2_5420336641237583870.pdf был создан
+29.10.2020 11:08:58 файл D:\УЧЁБА\C#\lab2cs\Server\Source\1582046345570.pdf был создан
+29.10.2020 11:08:58 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\HxDSetup (1).zip был создан
+29.10.2020 11:08:59 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\2_5420336641237583870 (1).zip был создан
+29.10.2020 11:08:59 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\ШилдтС#.zip был создан
+29.10.2020 11:08:59 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Biblia_S__3-izd_-_M_Flenov_2016.pdf был создан
+29.10.2020 11:09:00 файл D:\УЧЁБА\C#\lab2cs\Server\Source\C_7_0_Karmanny_spravochnik_-_Dzh_Albakhari_2017.pdf был создан
+29.10.2020 11:09:01 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\C_7_0_Karmanny_spravochnik_-_Dzh_Albakhari_2017.zip был создан
+29.10.2020 11:09:02 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\Elementarnoe_vvedenie_v_tekhnologiyu_neyronnykh_setey_s_primerami_programm_-_R_Tadeusevich_2011 (1).zip был создан
+29.10.2020 11:09:05 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\Biblia_S__3-izd_-_M_Flenov_2016.zip был создан
+29.10.2020 11:09:07 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\1582046345570.zip был создан
+29.10.2020 11:09:22 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Elementarnoe_vvedenie_v_tekhnologiyu_neyronnykh_setey_s_primerami_programm_-_R_Tadeusevich_2011.djvu был удален
+29.10.2020 11:09:22 файл D:\УЧЁБА\C#\lab2cs\Server\Source\HxDSetup.zip был удален
+29.10.2020 11:09:22 файл D:\УЧЁБА\C#\lab2cs\Server\Source\ШилдтС#.pdf был удален
+29.10.2020 11:09:22 файл D:\УЧЁБА\C#\lab2cs\Server\Source\2_5420336641237583870.pdf был удален
+29.10.2020 11:09:22 файл D:\УЧЁБА\C#\lab2cs\Server\Source\1582046345570.pdf был удален
+29.10.2020 11:09:22 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Biblia_S__3-izd_-_M_Flenov_2016.pdf был удален
+29.10.2020 11:09:22 файл D:\УЧЁБА\C#\lab2cs\Server\Source\C_7_0_Karmanny_spravochnik_-_Dzh_Albakhari_2017.pdf был удален
+29.10.2020 11:09:37 файл D:\УЧЁБА\C#\lab2cs\Server\Source\League of Legends installer RU.exe был создан
+29.10.2020 11:09:44 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\League of Legends installer RU.zip был создан
+29.10.2020 11:09:57 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Dearchivated\League of Legends installer RU_decrypted.exe был создан
+29.10.2020 11:10:01 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\$$$.zip был удален
+29.10.2020 11:10:01 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Dearchivated\HxDSetup_decrypted.zip был создан
+29.10.2020 11:10:02 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\HxDSetup$$$.zip был удален
+29.10.2020 11:10:23 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Dearchivated\1582046345570_decrypted.pdf был удален
+29.10.2020 11:10:24 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Dearchivated\Biblia_S__3-izd_-_M_Flenov_2016_decrypted.pdf был удален
+29.10.2020 11:10:24 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Dearchivated\C_7_0_Karmanny_spravochnik_-_Dzh_Albakhari_2017_decrypted.pdf был удален
+29.10.2020 11:10:24 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Dearchivated\HxDSetup_decrypted.zip был удален
+29.10.2020 11:10:24 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Dearchivated\League of Legends installer RU_decrypted.exe был удален
+29.10.2020 11:10:24 файл D:\УЧЁБА\C#\lab2cs\Server\Source\Dearchivated\ШилдтС#_decrypted.pdf был удален
+29.10.2020 11:10:35 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\2_5420336641237583870 (1).zip был удален
+29.10.2020 11:10:35 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\2_5420336641237583870.zip был удален
+29.10.2020 11:10:35 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\1582046345570.zip был удален
+29.10.2020 11:10:35 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\Biblia_S__3-izd_-_M_Flenov_2016.zip был удален
+29.10.2020 11:10:35 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\C_7_0_Karmanny_spravochnik_-_Dzh_Albakhari_2017.zip был удален
+29.10.2020 11:10:35 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\Elementarnoe_vvedenie_v_tekhnologiyu_neyronnykh_setey_s_primerami_programm_-_R_Tadeusevich_2011 (1).zip был удален
+29.10.2020 11:10:35 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\Elementarnoe_vvedenie_v_tekhnologiyu_neyronnykh_setey_s_primerami_programm_-_R_Tadeusevich_2011.zip был удален
+29.10.2020 11:10:35 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\HxDSetup (1).zip был удален
+29.10.2020 11:10:35 файл D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated\ШилдтС#.zip был удален
+29.10.2020 11:10:43 файл D:\УЧЁБА\C#\lab2cs\Server\Source\League of Legends installer RU.exe был удален

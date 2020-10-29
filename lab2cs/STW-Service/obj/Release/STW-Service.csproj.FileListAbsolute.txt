@@ -1,0 +1,9 @@
+D:\УЧЁБА\C#\lab2cs\STW-Service\obj\Release\STW_Service.STW_Service.resources
+D:\УЧЁБА\C#\lab2cs\STW-Service\obj\Release\STW-Service.csproj.GenerateResource.cache
+D:\УЧЁБА\C#\lab2cs\STW-Service\obj\Release\STW-Service.csproj.CoreCompileInputs.cache
+D:\УЧЁБА\C#\lab2cs\STW-Service\bin\Release\STW-Service.exe.config
+D:\УЧЁБА\C#\lab2cs\STW-Service\bin\Release\STW-Service.exe
+D:\УЧЁБА\C#\lab2cs\STW-Service\bin\Release\STW-Service.pdb
+D:\УЧЁБА\C#\lab2cs\STW-Service\obj\Release\STW-Service.exe
+D:\УЧЁБА\C#\lab2cs\STW-Service\obj\Release\STW-Service.pdb
+D:\УЧЁБА\C#\lab2cs\STW-Service\obj\Release\STW-Service.csprojAssemblyReference.cache

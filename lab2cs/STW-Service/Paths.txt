@@ -1,0 +1,4 @@
+D:\УЧЁБА\C#\lab2cs\Server\Source
+D:\УЧЁБА\C#\lab2cs\Server\Target
+D:\УЧЁБА\C#\lab2cs\Server\Target\Archivated
+D:\УЧЁБА\C#\lab2cs\Server\Source\Dearchivated
