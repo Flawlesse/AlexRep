@@ -1,21 +1,45 @@
 ﻿using System.Text;
 using System.Security.Cryptography;
-using System.IO.Compression;
 using System.IO;
 using System;
+using System.Configuration;
+using System.ServiceProcess;
 
 namespace STW_Service
 {
-    public static class Encryptor
+    public class Encryptor
     {
-        private static readonly CryptoOptions options = Manager.GetOptions<CryptoOptions>();
-        private static readonly DESCryptoServiceProvider crypto = new DESCryptoServiceProvider
+        readonly DESCryptoServiceProvider crypto;
+        readonly object obj = new object(); // just a mutex
+        string ErrorLogPath { get; } = ConfigurationManager.AppSettings["ErrorLogPath"];
+        public Encryptor()
         {
-            Key = Encoding.ASCII.GetBytes(options.Key),
-            IV = Encoding.ASCII.GetBytes(options.IV)
-        };
+            CryptoOptions options = (new Manager()).GetOptions<CryptoOptions>();
+            crypto = new DESCryptoServiceProvider
+            {
+                Key = Encoding.ASCII.GetBytes(options.Key),
+                IV = Encoding.ASCII.GetBytes(options.IV)
+            };
 
-        public static void Encrypt(Stream sourceStream, Stream targetEncryptedStream)
+            try
+            {
+                ErrorLogPath = (new Manager()).GetOptions<Logs>().ErrorLog;
+            }
+            catch (Exception ex)
+            {
+                lock (obj)
+                {
+                    using (var errorStream = new StreamWriter(new FileStream(ErrorLogPath, FileMode.OpenOrCreate)))
+                    {
+                        errorStream.WriteLine(ex.Message + "\n" + ex.StackTrace);
+                    }
+                    var service = new ServiceController("STW-Service");
+                    service.Stop();
+                }
+            }
+        }
+
+        public void Encrypt(Stream sourceStream, Stream targetEncryptedStream)
         {
             try
             {
@@ -26,14 +50,19 @@ namespace STW_Service
             }
             catch (Exception ex)
             {
-                using (StreamWriter errorStream = new StreamWriter(new FileStream(Watcher.ErrorLog, FileMode.OpenOrCreate)))
+                lock (obj)
                 {
-                    errorStream.Write(ex.Message + "\n" + ex.StackTrace);
+                    using (var errorStream = new StreamWriter(new FileStream(ErrorLogPath, FileMode.OpenOrCreate)))
+                    {
+                        errorStream.WriteLine(ex.Message + "\n" + ex.StackTrace);
+                    }
+                    var service = new ServiceController("STW-Service");
+                    service.Stop();
                 }
             }
         }
 
-        public static void Decrypt(Stream sourceEncryptedStream, Stream targetDecryptedStream)
+        public void Decrypt(Stream sourceEncryptedStream, Stream targetDecryptedStream)
         {
             try
             {
@@ -44,9 +73,14 @@ namespace STW_Service
             }
             catch (Exception ex)
             {
-                using (StreamWriter errorStream = new StreamWriter(new FileStream(Watcher.ErrorLog, FileMode.OpenOrCreate)))
+                lock (obj)
                 {
-                    errorStream.Write(ex.Message + "\n" + ex.StackTrace);
+                    using (StreamWriter errorStream = new StreamWriter(new FileStream(ErrorLogPath, FileMode.OpenOrCreate)))
+                    {
+                        errorStream.WriteLine(ex.Message + "\n" + ex.StackTrace);
+                    }
+                    var service = new ServiceController("STW-Service");
+                    service.Stop();
                 }
             }
         }

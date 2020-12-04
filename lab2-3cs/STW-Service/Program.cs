@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ServiceProcess;
+using System.Threading;
 
 namespace STW_Service
 {
@@ -14,12 +10,19 @@ namespace STW_Service
         /// </summary>
         static void Main()
         {
+#if DEBUG
+            STW_Service service = new STW_Service();
+            service.OnDebug();
+#else
+
+
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
                 new STW_Service()
             };
             ServiceBase.Run(ServicesToRun);
+#endif
         }
-    }
+        }
 }

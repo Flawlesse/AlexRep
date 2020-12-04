@@ -2,7 +2,8 @@
 using System.Threading.Tasks;
 using System.IO;
 using System.Threading;
-using System.Windows.Forms;
+using System.ServiceProcess;
+using System.Configuration;
 
 namespace STW_Service
 {
@@ -12,34 +13,45 @@ namespace STW_Service
         FileSystemWatcher TW { get; set; } //target watcher
         readonly object obj = new object(); //just a mutex
         bool enabled;
-        public static string DearcPath { get; private set; }
-        public static string ArcPath { get; private set; }
-        public static string Log { get; private set; }
-        public static string ErrorLog { get; private set; }
-        static Watcher()
-        {
-                var folders = Manager.GetOptions<ServerFolders>();
-                ArcPath = folders.ArcPath;
-                DearcPath = folders.DearcPath;
-                var logs = Manager.GetOptions<Logs>();
-                Log = logs.Log;
-                ErrorLog = logs.ErrorLog;
-        }
+        ServerFolders FolderSet { get; set; }
+        Logs LogSet { get; set; }
         public Watcher()
         {
-                SW = new FileSystemWatcher(Manager.GetOptions<ServerFolders>().SourcePath);
-                TW = new FileSystemWatcher(Manager.GetOptions<ServerFolders>().TargetPath);
-                SW.Deleted += Deleted;
-                TW.Deleted += Deleted;
-                SW.Created += Created;
-                TW.Created += Created;
-                SW.Renamed += Renamed;
-                TW.Renamed += Renamed;
-                SW.IncludeSubdirectories = TW.IncludeSubdirectories = true;
+            FolderSet = new ServerFolders();
+            LogSet = new Logs();
+            try
+            {
+                Manager configManager = new Manager();
+                FolderSet = configManager.GetOptions<ServerFolders>();
+                LogSet = configManager.GetOptions<Logs>();
+            }
+            catch (Exception ex)
+            {
+                lock (obj)
+                {
+                    string errorLogPath = LogSet.ErrorLog;
+                    if (File.Exists(errorLogPath))
+                    {
+                        File.AppendAllText(errorLogPath, "\n" + ex.Message + "\n" + ex.StackTrace);
+                    }
+                }
+            }
+
+            SW = new FileSystemWatcher(FolderSet.SourcePath);
+            TW = new FileSystemWatcher(FolderSet.TargetPath);
+            
+            SW.IncludeSubdirectories = TW.IncludeSubdirectories = true;
         }
         public void Start()
         {
+            SW.Deleted += Deleted;
+            TW.Deleted += Deleted;
+            SW.Created += Created;
+            TW.Created += Created;
+            SW.Renamed += Renamed;
+            TW.Renamed += Renamed;
             SW.EnableRaisingEvents = TW.EnableRaisingEvents = true;
+            enabled = true;
             while (enabled)
             {
                 Thread.Sleep(500);
@@ -52,11 +64,22 @@ namespace STW_Service
         }
         private void WriteEntry(string fileEvent, string filePath)
         {
-            using (StreamWriter writer = new StreamWriter(Log, true))
+            try
             {
-                writer.WriteLine(String.Format("{0} файл {1} был {2}",
-                                 DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), filePath, fileEvent));
-                writer.Flush();
+                using (StreamWriter writer = new StreamWriter(LogSet.Log, true))
+                {
+                    writer.WriteLine(string.Format("{0} файл {1} был {2}",
+                                     DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), filePath, fileEvent));
+                    writer.Flush();
+                }
+            }
+            catch (Exception ex)
+            {
+                string errorLogPath = LogSet.ErrorLog;
+                if (File.Exists(errorLogPath))
+                {
+                    File.AppendAllText(errorLogPath, "\n" + ex.Message + "\n" + ex.StackTrace);
+                }
             }
         }
         void Deleted(object sender, FileSystemEventArgs e)
@@ -66,15 +89,18 @@ namespace STW_Service
                 string fileEvent = "удален";
                 string filePath = e.FullPath;
                 lock (obj)
+                {
                     WriteEntry(fileEvent, filePath);
+                }
             }
             catch (Exception ex)
             {
                 lock (obj)
                 {
-                    using (StreamWriter errorStream = new StreamWriter(new FileStream(ErrorLog, FileMode.OpenOrCreate)))
+                    string errorLogPath = LogSet.ErrorLog;
+                    if (File.Exists(errorLogPath))
                     {
-                        errorStream.WriteLine(ex.Message + "\n" + ex.StackTrace);
+                        File.AppendAllText(errorLogPath, "\n" + ex.Message + "\n" + ex.StackTrace);
                     }
                 }
             }
@@ -91,16 +117,17 @@ namespace STW_Service
                 }
                 if (Path.GetDirectoryName(e.FullPath) == SW.Path)
                 {
-                    Task.Run(() => Archivator.Archivate(e.FullPath, ArcPath));
+                    Task.Run(() => (new Archivator()).Archivate(e.FullPath, FolderSet.ArcPath));
                 }
             }
             catch (Exception ex)
             {
                 lock (obj)
                 {
-                    using (StreamWriter errorStream = new StreamWriter(new FileStream(ErrorLog, FileMode.OpenOrCreate)))
+                    string errorLogPath = LogSet.ErrorLog;
+                    if (File.Exists(errorLogPath))
                     {
-                        errorStream.WriteLine(ex.Message + "\n" + ex.StackTrace);
+                        File.AppendAllText(errorLogPath, "\n" + ex.Message + "\n" + ex.StackTrace);
                     }
                 }
             }
@@ -109,11 +136,12 @@ namespace STW_Service
         {
             try
             {
-                if (Path.GetFileNameWithoutExtension(e.FullPath).Contains("$$$") && Path.GetDirectoryName(e.FullPath) == ArcPath)
+                if (Path.GetFileNameWithoutExtension(e.FullPath).Contains("$$$") &&
+                    Path.GetDirectoryName(e.FullPath) == FolderSet.ArcPath)
                 {
                     Task.Run(() =>
                     {
-                        Archivator.Dearchivate(e.FullPath, DearcPath);
+                        (new Archivator()).Dearchivate(e.FullPath, FolderSet.DearcPath);
                         Thread.Sleep(100);
                         File.Delete(e.FullPath);
                     });
@@ -132,9 +160,10 @@ namespace STW_Service
             {
                 lock (obj)
                 {
-                    using (StreamWriter errorStream = new StreamWriter(new FileStream(ErrorLog, FileMode.OpenOrCreate)))
+                    string errorLogPath = LogSet.ErrorLog;
+                    if (File.Exists(errorLogPath))
                     {
-                        errorStream.WriteLine(ex.Message + "\n" + ex.StackTrace);
+                        File.AppendAllText(errorLogPath, "\n" + ex.Message + "\n" + ex.StackTrace);
                     }
                 }
             }

@@ -1,8 +1,13 @@
-﻿namespace STW_Service
+﻿using System.Configuration;
+namespace STW_Service
 {
+    [Parsable("mainLogs")]
     class Logs
     {
-        public string ErrorLog { get; set; }
-        public string Log { get; set; }
+        [Parsable("error")]
+        public string ErrorLog { get; set; } = ConfigurationManager.AppSettings["ErrorLogPath"];
+        [Parsable("actLog")]
+        public string Log { get; set; } = ConfigurationManager.AppSettings["LogPath"];
+        public Logs() { }
     }
 }

@@ -9,9 +9,9 @@ namespace STW_Service
         public STW_Service()
         {
             InitializeComponent();
-            this.CanStop = true;
-            this.CanPauseAndContinue = true;
-            this.AutoLog = true;
+            CanStop = true;
+            CanPauseAndContinue = true;
+            AutoLog = true;
         }
 
         protected override void OnStart(string[] args)
@@ -24,6 +24,10 @@ namespace STW_Service
         {
             watcher.Stop();
             Thread.Sleep(1000);
+        }
+        public void OnDebug()
+        {
+            OnStart(null);
         }
     }
 }

@@ -1,8 +1,13 @@
-﻿namespace STW_Service
+﻿using System.Configuration;
+namespace STW_Service
 {
+    [Parsable("cryptoOptions")]
     class CryptoOptions
     {
-        public string Key { get; set; }
-        public string IV { get; set; }
+        [Parsable("key")]
+        public string Key { get; set; } = ConfigurationManager.AppSettings["CryptoKey"];
+        [Parsable("initVector")]
+        public string IV { get; set; } = ConfigurationManager.AppSettings["CryptoIV"];
+        public CryptoOptions() { }
     }
 }

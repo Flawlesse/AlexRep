@@ -1,25 +1,20 @@
-﻿using Newtonsoft.Json;
-using System.Configuration;
-
+﻿using System.Configuration;
 namespace STW_Service
 {
+    [Parsable("mainFolders")]
     class ServerFolders
     {
-        [JsonProperty("Source")]
-        [ConfigurationProperty("Source")]
-        public string SourcePath { get; set; }
-        
-        [JsonProperty("Target")]
-        [ConfigurationProperty("Target")]
-        public string TargetPath { get; set; }
-        
-        [JsonProperty("Dearchivated")]
-        [ConfigurationProperty("Dearchivated")]
-        public string DearcPath { get; set; }
-        
-        [JsonProperty("Archivated")]
-        [ConfigurationProperty("Archivated")]
-        public string ArcPath { get; set; }
-        
+        [Parsable("source")]
+        public string SourcePath { get; set; } = ConfigurationManager.AppSettings["SourcePath"];
+
+        [Parsable("target")]
+        public string TargetPath { get; set; } = ConfigurationManager.AppSettings["TargetPath"];
+
+        [Parsable("dearchivated")]
+        public string DearcPath { get; set; } = ConfigurationManager.AppSettings["DearchivationPath"];
+
+        [Parsable("archivated")]
+        public string ArcPath { get; set; } = ConfigurationManager.AppSettings["ArchivationPath"];
+        public ServerFolders() { }
     }
 }
